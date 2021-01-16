@@ -1,6 +1,7 @@
 {
   "name": "ethereum-explorer",
   "version": "0.0.0",
+  "main": "server.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -25,10 +26,13 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "bootstrap": "^4.5.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "jquery": "^3.5.1",
     "ngx-infinite-scroll": "^10.0.1",
     "ngx-pagination": "^5.0.0",
     "rxjs": "~6.6.0",
+    "server-static": "^2.0.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

@@ -1,6 +1,6 @@
-# EthereumExplorer
+# Ethereum Explorer
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.7.
+The application allows users to search an Ethereum block for all the transactions associated with a block or an address and return the results of the transaction.
 
 ## Development server
 
