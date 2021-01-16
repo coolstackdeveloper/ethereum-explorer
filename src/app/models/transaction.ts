@@ -7,8 +7,3 @@ export interface TransactionDto {
   gas: string;
   value: string;
 }
-
-
-export interface TransactionsDtoResponse {
-  transactions: TransactionDto[];
-}

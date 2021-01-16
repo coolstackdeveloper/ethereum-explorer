@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { shareReplay } from 'rxjs/operators';
-import { TransactionsDtoResponse } from '../models/transaction';
-import { ToastNotificationService } from './toast-notification.service';
+import { TransactionDto } from '../models/transaction';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -13,7 +12,7 @@ export class EthereumApiService {
 
   searchByAddress(address, pageNumber) {
     return this.http
-      .get<TransactionsDtoResponse>(
+      .get<TransactionDto[]>(
         `${environment.apiUrl}/addresses/${address}/transactions?pageNumber=${pageNumber}`
       )
       .pipe(shareReplay());
@@ -21,7 +20,7 @@ export class EthereumApiService {
 
   searchByBlockNumber(blockNumber, pageNumber) {
     return this.http
-      .get<TransactionsDtoResponse>(
+      .get<TransactionDto[]>(
         `${environment.apiUrl}/blocks/${blockNumber}/transactions?pageNumber=${pageNumber}`
       )
       .pipe(shareReplay());

@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
-import {
-  TransactionDto,
-  TransactionsDtoResponse,
-} from 'src/app/models/transaction';
+import { TransactionDto } from 'src/app/models/transaction';
 import { EthereumApiService } from 'src/app/services/ethereum-api.service';
 import { ToastNotificationService } from 'src/app/services/toast-notification.service';
 import Constants from '../../constants';
@@ -39,79 +35,59 @@ export class TransactionsComponent implements OnInit {
     });
   }
 
-  mockTransactions(pageNumber): Observable<TransactionsDtoResponse> {
-    let transactions: TransactionDto[] = [];
-
-    for (let index = 0; index < 10; ++index) {
-      transactions.push({
-        blockHash: 'sample',
-        blockNumber: 1 * pageNumber + index,
-        from: 'sadasd',
-        gas: '2424',
-        hash: '9090',
-        to: '090909',
-        value: '900000',
-      });
-    }
-
-    return of({ transactions });
-  }
-
   searchByAddress(pageNumber) {
     this.toastNotificationService.toast(
       `Fetching transactions to/from address ${this.currentAddress}`,
       -1
     );
 
-    this.ethereumApiService.searchByAddress(this.currentAddress, pageNumber).subscribe(
-      //this.mockTransactions(pageNumber).subscribe(
-      (transactionsDtoResponse: TransactionsDtoResponse) => {
-        this.toastNotificationService.toast('', 0);
+    this.ethereumApiService
+      .searchByAddress(this.currentAddress, pageNumber)
+      .subscribe(
+        (transactions: TransactionDto[]) => {
+          this.toastNotificationService.toast('', 0);
 
-        this.currentPageNumber = pageNumber;
+          this.currentPageNumber = pageNumber;
 
-        if (this.transactions.length === 0) {
-          this.numberOfItemsPerPage =
-            transactionsDtoResponse.transactions.length;
-          this.transactions = Array(this.numberOfItemsPerPage).fill({});
-        }
+          if (this.transactions.length === 0) {
+            this.numberOfItemsPerPage = transactions.length;
+            this.transactions = Array(this.numberOfItemsPerPage).fill({});
+          }
 
-        // this logic is required because fetching by address is going to take a long time
-        // as we need to scan the whole of block chain iteratively
-        // also we dont know how many blocks have the transactions that has address in it
-        // this is a bit af adaptive process...
-        if (!this.pagesVisited.includes(pageNumber)) {
-          this.pagesVisited.push(pageNumber);
+          // this logic is required because fetching by address is going to take a long time
+          // as we need to scan the whole of block chain iteratively
+          // also we dont know how many blocks have the transactions that has address in it
+          // this is a bit af adaptive process...
+          if (!this.pagesVisited.includes(pageNumber)) {
+            this.pagesVisited.push(pageNumber);
 
-          let numerOfItemsToDelete =
-            transactionsDtoResponse.transactions.length > 0
-              ? 0
-              : this.numberOfItemsPerPage;
+            let numerOfItemsToDelete =
+              transactions.length > 0 ? 0 : this.numberOfItemsPerPage;
 
-          // this would be the last page
-          this.currentPageNumber =
-            transactionsDtoResponse.transactions.length > 0
-              ? this.currentPageNumber
-              : this.currentPageNumber - 1;
+            // this would be the last page
+            this.currentPageNumber =
+              transactions.length > 0
+                ? this.currentPageNumber
+                : this.currentPageNumber - 1;
 
-          this.transactions.splice(
-            this.numberOfItemsPerPage * (pageNumber - 1),
-            numerOfItemsToDelete,
-            ...transactionsDtoResponse.transactions
+            this.transactions.splice(
+              this.numberOfItemsPerPage * (pageNumber - 1),
+              numerOfItemsToDelete,
+              ...transactions
+            );
+          }
+        },
+        (error) => {
+          const errorMessage =
+            error.status === 404
+              ? 'Invalid block number'
+              : error.error.FailureReason;
+          this.toastNotificationService.toast(
+            errorMessage,
+            Constants.toastNotificationTimeout
           );
         }
-      },
-      (error) => {
-        const errorMessage =
-          error.status === 404
-            ? 'Invalid block number'
-            : error.error.FailureReason;
-        this.toastNotificationService.toast(
-          errorMessage,
-          Constants.toastNotificationTimeout
-        );
-      }
-    );
+      );
   }
 
   searchByBlockNumber(pageNumber) {
@@ -134,14 +110,13 @@ export class TransactionsComponent implements OnInit {
         )
       )
       .subscribe(
-        (transactionsDtoResponse: TransactionsDtoResponse) => {
+        (transactions: TransactionDto[]) => {
           this.toastNotificationService.toast('', 0);
 
           this.currentPageNumber = pageNumber;
 
           if (this.transactions.length === 0) {
-            this.numberOfItemsPerPage =
-              transactionsDtoResponse.transactions.length;
+            this.numberOfItemsPerPage = transactions.length;
             this.transactions = Array(this.totalTransactionCount).fill({});
           }
 
@@ -149,7 +124,7 @@ export class TransactionsComponent implements OnInit {
           this.transactions.splice(
             this.numberOfItemsPerPage * (pageNumber - 1),
             this.numberOfItemsPerPage,
-            ...transactionsDtoResponse.transactions
+            ...transactions
           );
         },
         (error) => {
