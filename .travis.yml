@@ -4,7 +4,7 @@ node_js:
 install:
   - npm install
 script:
-  - echo "skipping tests"
+  - ng test
 deploy:
   app: stackpond-ethereum-explorer
   provider: heroku
