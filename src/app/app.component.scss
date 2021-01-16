@@ -1,0 +1,19 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  &__route {
+    flex: 1;
+  }
+
+  &__header {
+    top: 0;
+    position: sticky;
+  }
+  
+  &__footer {
+    bottom: 0;
+    position: sticky;
+  }
+}

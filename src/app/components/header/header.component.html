@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Ethereum Explorer</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Block number/Address here"
+        list="blockNumbers"
+        #blockNumberOrAddress
+      />
+      <datalist id="blockNumbers">
+        <option value="9148874"></option>
+        <option value="0x22a52E0f761345eCFfBa06482C99Dc3dEA7Bd8F1"></option>
+      </datalist>
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="searchByBlockNumber(blockNumberOrAddress)"
+        >
+          Search by Block number
+        </button>
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="searchByAddress(blockNumberOrAddress)"
+        >
+          Search by Address
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

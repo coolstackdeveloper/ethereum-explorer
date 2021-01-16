@@ -1,0 +1,93 @@
+<div class="transactions">
+  <div
+    class="alert alert-info"
+    *ngIf="totalTransactionCount > 0 && transactions.length > 0"
+  >
+    A total of {{ totalTransactionCount }} transactions found
+  </div>
+  <div class="transactions__pagination">
+    <pagination-controls
+      autoHide="true"
+      *ngIf="transactions.length > 0"
+      (pageChange)="pageChanged($event)"
+    ></pagination-controls>
+  </div>
+  <table
+    *ngIf="transactions.length > 0"
+    class="table table-striped table-hover transactions__table"
+  >
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Transaction hash</th>
+        <th scope="col">Block number</th>
+        <th scope="col">Block hash</th>
+        <th scope="col">From</th>
+        <th scope="col">To</th>
+        <th scope="col">Value (Wei)</th>
+        <th scope="col">Gas (Wei)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let transaction of transactions
+            | paginate
+              : {
+                  itemsPerPage: numberOfItemsPerPage,
+                  currentPage: currentPageNumber
+                }
+        "
+      >
+        <td
+          class="text-truncate"
+          data-toggle="tooltip"
+          [title]="transaction.hash"
+        >
+          {{ transaction.hash }}
+        </td>
+        <td
+          class="text-truncate"
+          data-toggle="tooltip"
+          [title]="transaction.blockNumber"
+        >
+          {{ transaction.blockNumber }}
+        </td>
+        <td
+          class="text-truncate"
+          data-toggle="tooltip"
+          [title]="transaction.blockHash"
+        >
+          {{ transaction.blockHash }}
+        </td>
+        <td
+          class="text-truncate"
+          data-toggle="tooltip"
+          [title]="transaction.from"
+        >
+          {{ transaction.from }}
+        </td>
+        <td
+          class="text-truncate"
+          data-toggle="tooltip"
+          [title]="transaction.to"
+        >
+          {{ transaction.to }}
+        </td>
+        <td
+          class="text-truncate"
+          data-toggle="tooltip"
+          [title]="transaction.value"
+        >
+          {{ transaction.value }}
+        </td>
+        <td
+          class="text-truncate"
+          data-toggle="tooltip"
+          [title]="transaction.gas"
+        >
+          {{ transaction.gas }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
