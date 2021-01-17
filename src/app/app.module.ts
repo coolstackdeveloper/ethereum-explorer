@@ -31,7 +31,7 @@ import { ToastNotificationComponent } from './components/toast-notification/toas
     AppRoutingModule,
     FontAwesomeModule,
     InfiniteScrollModule,
-    NgxPaginationModule
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

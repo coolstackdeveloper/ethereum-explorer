@@ -81,7 +81,8 @@ export class TransactionsComponent implements OnInit {
           const errorMessage =
             error.status === 404
               ? 'Invalid block number'
-              : error.error.FailureReason;
+              : error.error.FailureReason ||
+                `Failed to retrieve the transactions for address ${this.currentAddress}`;
           this.toastNotificationService.toast(
             errorMessage,
             Constants.toastNotificationTimeout
@@ -131,7 +132,8 @@ export class TransactionsComponent implements OnInit {
           const errorMessage =
             error.status === 404
               ? 'Invalid block number'
-              : error.error.FailureReason;
+              : error.error.FailureReason ||
+                `Failed to retrieve the transactions for block ${this.currentBlockNumber}`;
 
           this.toastNotificationService.toast(
             errorMessage,

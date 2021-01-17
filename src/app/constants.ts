@@ -1,3 +1,3 @@
 export default {
-  toastNotificationTimeout: 2000,
+  toastNotificationTimeout: 4000,
 };

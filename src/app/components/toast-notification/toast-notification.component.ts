@@ -7,12 +7,13 @@ import { ToastNotificationService } from 'src/app/services/toast-notification.se
   styleUrls: ['./toast-notification.component.scss'],
 })
 export class ToastNotificationComponent implements OnInit {
-  message: string;
+  toast: string;
+
   constructor(private toastNotificationService: ToastNotificationService) {}
 
   ngOnInit(): void {
     this.toastNotificationService
       .toasts()
-      .subscribe((error) => (this.message = error));
+      .subscribe((toast) => (this.toast = toast));
   }
 }
