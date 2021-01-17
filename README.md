@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/stackpond/ethereum-explorer.svg?branch=main)](https://travis-ci.com/stackpond/ethereum-explorer)
+[![Build Status](https://travis-ci.com/stackpond/ethereum-explorer.svg?token=ZiEpqMrtCtoYozqmY1kh&branch=main)](https://travis-ci.com/stackpond/ethereum-explorer)
 
 # Ethereum Explorer
 
