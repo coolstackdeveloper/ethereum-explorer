@@ -1,6 +1,8 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs/operators';
 import { TransactionDto } from 'src/app/models/transaction';
 import { EthereumApiService } from 'src/app/services/ethereum-api.service';
 import { ToastNotificationService } from 'src/app/services/toast-notification.service';
@@ -56,26 +58,27 @@ export class TransactionsComponent implements OnInit {
         )
       )
       .subscribe(
-        (transactions: TransactionDto[]) => {
-          this.toastNotificationService.notoast();
-
+        (transactionsDtoResponse: TransactionDto[]) => {
           this.currentPageNumber = pageNumber;
+          this.toastNotificationService.clearToast();
 
-          if (this.transactions.length === 0 && this.transactionsCount > 0) {
-            this.numberOfItemsPerPage = transactions.length;
+          // One time initialization for the current block
+          if (this.transactions.length === 0) {
+            this.numberOfItemsPerPage = transactionsDtoResponse.length;
             this.transactions = Array(this.transactionsCount).fill({});
-          } else {
+          }
+
+          if (transactionsDtoResponse.length === 0) {
             this.toastNotificationService.toast(
               `No transactions exist for block ${this.currentBlockNumber}`
             );
+          } else {
+            this.transactions.splice(
+              this.numberOfItemsPerPage * (pageNumber - 1),
+              this.numberOfItemsPerPage,
+              ...transactionsDtoResponse
+            );
           }
-
-          // Only fill required paged slot
-          this.transactions.splice(
-            this.numberOfItemsPerPage * (pageNumber - 1),
-            this.numberOfItemsPerPage,
-            ...transactions
-          );
         },
         (error) => {
           const errorMessage =
@@ -104,39 +107,35 @@ export class TransactionsComponent implements OnInit {
         pageNumber
       )
       .subscribe(
-        (transactions: TransactionDto[]) => {
-          this.toastNotificationService.notoast();
-
-          this.currentPageNumber = pageNumber;
+        (transactionsDtoResponse: TransactionDto[]) => {
+          this.toastNotificationService.clearToast();
 
           if (this.transactions.length === 0) {
-            this.numberOfItemsPerPage = transactions.length;
+            this.numberOfItemsPerPage = transactionsDtoResponse.length;
             this.transactions = Array(this.numberOfItemsPerPage).fill({});
           }
 
           if (!this.pagesVisited.includes(pageNumber)) {
             this.pagesVisited.push(pageNumber);
 
-            let numerOfItemsToDelete =
-              transactions.length > 0 ? 0 : this.numberOfItemsPerPage;
-
-            // this would be the last page
-            this.currentPageNumber =
-              transactions.length > 0
-                ? this.currentPageNumber
-                : this.currentPageNumber - 1;
-
+            // this keeps adjusting the pages
             this.transactions.splice(
               this.numberOfItemsPerPage * (pageNumber - 1),
-              numerOfItemsToDelete,
-              ...transactions
+              transactionsDtoResponse.length > 0
+                ? 0
+                : this.numberOfItemsPerPage,
+              ...transactionsDtoResponse
             );
 
-            if (transactions.length === 0) {
-              this.toastNotificationService.toast(
-                `No transactions exist for address ${this.currentAddress} within block ${this.currentBlockNumber}`
-              );
-            }
+            // Stick to the previous page
+            this.currentPageNumber =
+              transactionsDtoResponse.length > 0 ? pageNumber : pageNumber - 1;
+          }
+
+          if (this.transactions.length === 0) {
+            this.toastNotificationService.toast(
+              `No transactions exist for address ${this.currentAddress} within block ${this.currentBlockNumber}`
+            );
           }
         },
         (error) => {

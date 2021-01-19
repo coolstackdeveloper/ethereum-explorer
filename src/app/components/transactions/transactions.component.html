@@ -1,7 +1,7 @@
 <div class="transactions">
   <div class="transactions__pagination mt-2">
     <pagination-controls
-      autoHide="true"
+      autoHide="false"
       *ngIf="transactions.length > 0"
       (pageChange)="pageChanged($event)"
     ></pagination-controls>

@@ -18,7 +18,7 @@ export class ToastNotificationService {
       .subscribe((error: string) => this.toastSubject.next(error));
   }
 
-  notoast() {
+  clearToast() {
     this.toast();
   }
 }
