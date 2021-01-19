@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://stackpond-ethereum-api.herokuapp.com/api',
+  apiUrl: 'https://localhost:5001/api'
 };
 
 /*
