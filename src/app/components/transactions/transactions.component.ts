@@ -38,8 +38,7 @@ export class TransactionsComponent implements OnInit {
 
   searchTransactionsByBlockNumber(pageNumber) {
     this.toastNotificationService.toast(
-      `Fetching transactions for the block ${this.currentBlockNumber}`,
-      -1
+      `Fetching transactions for the block ${this.currentBlockNumber}`
     );
 
     this.ethereumApiService
@@ -58,13 +57,17 @@ export class TransactionsComponent implements OnInit {
       )
       .subscribe(
         (transactions: TransactionDto[]) => {
-          this.toastNotificationService.toast('', 0);
+          this.toastNotificationService.notoast();
 
           this.currentPageNumber = pageNumber;
 
-          if (this.transactions.length === 0) {
+          if (this.transactions.length === 0 && this.transactionsCount > 0) {
             this.numberOfItemsPerPage = transactions.length;
             this.transactions = Array(this.transactionsCount).fill({});
+          } else {
+            this.toastNotificationService.toast(
+              `No transactions exist for block ${this.currentBlockNumber}`
+            );
           }
 
           // Only fill required paged slot
@@ -91,8 +94,7 @@ export class TransactionsComponent implements OnInit {
 
   searchTransactionsByBlockNumberAndAddress(pageNumber) {
     this.toastNotificationService.toast(
-      `Fetching transactions for address ${this.currentAddress} in block ${this.currentBlockNumber}`,
-      -1
+      `Fetching transactions for address ${this.currentAddress} in block ${this.currentBlockNumber}`
     );
 
     this.ethereumApiService
@@ -103,7 +105,7 @@ export class TransactionsComponent implements OnInit {
       )
       .subscribe(
         (transactions: TransactionDto[]) => {
-          this.toastNotificationService.toast('', 0);
+          this.toastNotificationService.notoast();
 
           this.currentPageNumber = pageNumber;
 
@@ -129,12 +131,18 @@ export class TransactionsComponent implements OnInit {
               numerOfItemsToDelete,
               ...transactions
             );
+
+            if (transactions.length === 0) {
+              this.toastNotificationService.toast(
+                `No transactions exist for address ${this.currentAddress} within block ${this.currentBlockNumber}`
+              );
+            }
           }
         },
         (error) => {
           const errorMessage =
             error.status === 404
-              ? 'Invalid block number'
+              ? 'Invalid block number and/or address'
               : error.error.FailureReason ||
                 `Failed to retrieve the transactions for address ${this.currentAddress} in block ${this.currentBlockNumber}`;
           this.toastNotificationService.toast(

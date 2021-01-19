@@ -12,14 +12,13 @@ export class ToastNotificationService {
     return this.toastSubject;
   }
 
-  toast(message, timeout) {
-    this.toastSubject.next(message);
+  toast(message = '', timeout = null) {
+    of(message)
+      .pipe(delay(timeout ?? 0))
+      .subscribe((error: string) => this.toastSubject.next(error));
+  }
 
-    // Clear error notification after set interval
-    if (+timeout >= 0) {
-      of(null)
-        .pipe(delay(timeout))
-        .subscribe((error: string) => this.toastSubject.next(error));
-    }
+  notoast() {
+    this.toast();
   }
 }
