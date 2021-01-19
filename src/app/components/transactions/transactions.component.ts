@@ -108,6 +108,7 @@ export class TransactionsComponent implements OnInit {
       )
       .subscribe(
         (transactionsDtoResponse: TransactionDto[]) => {
+          this.currentPageNumber = pageNumber;
           this.toastNotificationService.clearToast();
 
           if (this.transactions.length === 0) {
@@ -127,7 +128,7 @@ export class TransactionsComponent implements OnInit {
               ...transactionsDtoResponse
             );
 
-            // Stick to the previous page
+            // Stick to the previous page if no further transactions found
             this.currentPageNumber =
               transactionsDtoResponse.length > 0 ? pageNumber : pageNumber - 1;
           }
