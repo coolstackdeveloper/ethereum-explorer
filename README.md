@@ -2,7 +2,7 @@
 
 # Ethereum Explorer
 
-The application allows users to search an Ethereum block for all the transactions associated with a block or an address and return the results of the transaction.
+The application allows users to search an Ethereum block for all the transactions associated with a block or an address within a block and return the results of the transaction.
 
 Try out the app deployed in Heroku at https://stackpond-ethereum-explorer.herokuapp.com/
 
