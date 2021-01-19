@@ -102,8 +102,6 @@ export class TransactionsComponent implements OnInit {
       )
       .subscribe(
         (transactions: TransactionDto[]) => {
-          console.log(transactions);
-          console.log(this.transactions);
           this.toastNotificationService.toast('', 0);
 
           this.currentPageNumber = pageNumber;

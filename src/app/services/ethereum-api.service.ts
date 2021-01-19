@@ -29,7 +29,11 @@ export class EthereumApiService {
   searchTransactionsByBlockNumberAndAddress(blockNumber, address, pageNumber) {
     return this.http
       .get<TransactionDto[]>(
-        `${environment.apiUrl}/transactions?blockNumber=${blockNumber}&address=${address}&pageNumber=${pageNumber}`
+        `${
+          environment.apiUrl
+        }/transactions?blockNumber=${blockNumber}&address=${(
+          address ?? ''
+        ).trim()}&pageNumber=${pageNumber}`
       )
       .pipe(shareReplay());
   }
