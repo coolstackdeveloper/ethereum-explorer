@@ -28,6 +28,7 @@ export class TransactionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
+      this.pagesVisited = [];
       this.transactions = [];
       this.currentAddress = params['address'];
       this.currentBlockNumber = params['blockNumber'];
@@ -101,6 +102,8 @@ export class TransactionsComponent implements OnInit {
       )
       .subscribe(
         (transactions: TransactionDto[]) => {
+          console.log(transactions);
+          console.log(this.transactions);
           this.toastNotificationService.toast('', 0);
 
           this.currentPageNumber = pageNumber;
