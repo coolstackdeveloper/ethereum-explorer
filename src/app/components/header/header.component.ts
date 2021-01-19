@@ -9,11 +9,13 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
   constructor(private router: Router) {}
 
-  searchByBlockNumber(blockNumber) {
-    this.router.navigateByUrl(`/blocks/${blockNumber.value}/transactions`);
-  }
-
-  searchByAddress(address) {
-    this.router.navigateByUrl(`/addresses/${address.value}/transactions`);
+  searchTransactions(blockNumber, address) {
+    if (!!blockNumber.value && !!address.value) {
+      this.router.navigateByUrl(
+        `/transactions/${blockNumber.value}/${address.value}`
+      );
+    } else if (!!blockNumber.value) {
+      this.router.navigateByUrl(`/blocks/${blockNumber.value}/transactions`);
+    }
   }
 }

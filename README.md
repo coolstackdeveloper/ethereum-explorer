@@ -46,5 +46,3 @@ The transaction results are paged for better user experience.
 The app uses back end api (refer my another project Ethereum API at https://github.com/stackpond/ethereum-api which in turn uses Infura API (refer https://infura.io/docs/ethereum)
 
 Infura API has rate limit imposed (refer https://infura.io/pricing) which may also slow down the processing.
-
-The search by address is especially slow because Infura API does not provide any API for this use. Hence every transactions of every block needs to be processed and it can take a very long time before the results are fetched. I have few ideas to speed this up by creating an indexer service separate from core API which can then be consumed for faster processing. This is TBD.

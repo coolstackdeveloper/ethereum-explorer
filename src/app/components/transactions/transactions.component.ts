@@ -35,63 +35,7 @@ export class TransactionsComponent implements OnInit {
     });
   }
 
-  searchByAddress(pageNumber) {
-    this.toastNotificationService.toast(
-      `Fetching transactions to/from address ${this.currentAddress}`,
-      -1
-    );
-
-    this.ethereumApiService
-      .searchByAddress(this.currentAddress, pageNumber)
-      .subscribe(
-        (transactions: TransactionDto[]) => {
-          this.toastNotificationService.toast('', 0);
-
-          this.currentPageNumber = pageNumber;
-
-          if (this.transactions.length === 0) {
-            this.numberOfItemsPerPage = transactions.length;
-            this.transactions = Array(this.numberOfItemsPerPage).fill({});
-          }
-
-          // this logic is required because fetching by address is going to take a long time
-          // as we need to scan the whole of block chain iteratively
-          // also we dont know how many blocks have the transactions that has address in it
-          // this is a bit af adaptive process...
-          if (!this.pagesVisited.includes(pageNumber)) {
-            this.pagesVisited.push(pageNumber);
-
-            let numerOfItemsToDelete =
-              transactions.length > 0 ? 0 : this.numberOfItemsPerPage;
-
-            // this would be the last page
-            this.currentPageNumber =
-              transactions.length > 0
-                ? this.currentPageNumber
-                : this.currentPageNumber - 1;
-
-            this.transactions.splice(
-              this.numberOfItemsPerPage * (pageNumber - 1),
-              numerOfItemsToDelete,
-              ...transactions
-            );
-          }
-        },
-        (error) => {
-          const errorMessage =
-            error.status === 404
-              ? 'Invalid block number'
-              : error.error.FailureReason ||
-                `Failed to retrieve the transactions for address ${this.currentAddress}`;
-          this.toastNotificationService.toast(
-            errorMessage,
-            Constants.toastNotificationTimeout
-          );
-        }
-      );
-  }
-
-  searchByBlockNumber(pageNumber) {
+  searchTransactionsByBlockNumber(pageNumber) {
     this.toastNotificationService.toast(
       `Fetching transactions for the block ${this.currentBlockNumber}`,
       -1
@@ -104,7 +48,7 @@ export class TransactionsComponent implements OnInit {
           this.totalTransactionCount = transactionCount;
         }),
         switchMap((_) =>
-          this.ethereumApiService.searchByBlockNumber(
+          this.ethereumApiService.searchTransactionsByBlockNumber(
             this.currentBlockNumber,
             pageNumber
           )
@@ -143,8 +87,66 @@ export class TransactionsComponent implements OnInit {
       );
   }
 
+  searchTransactionsByBlockNumberAndAddress(pageNumber) {
+    this.toastNotificationService.toast(
+      `Fetching transactions for address ${this.currentAddress} in block ${this.currentBlockNumber}`,
+      -1
+    );
+
+    this.ethereumApiService
+      .searchTransactionsByBlockNumberAndAddress(
+        this.currentBlockNumber,
+        this.currentAddress,
+        pageNumber
+      )
+      .subscribe(
+        (transactions: TransactionDto[]) => {
+          this.toastNotificationService.toast('', 0);
+
+          this.currentPageNumber = pageNumber;
+
+          if (this.transactions.length === 0) {
+            this.numberOfItemsPerPage = transactions.length;
+            this.transactions = Array(this.numberOfItemsPerPage).fill({});
+          }
+
+          if (!this.pagesVisited.includes(pageNumber)) {
+            this.pagesVisited.push(pageNumber);
+
+            let numerOfItemsToDelete =
+              transactions.length > 0 ? 0 : this.numberOfItemsPerPage;
+
+            // this would be the last page
+            this.currentPageNumber =
+              transactions.length > 0
+                ? this.currentPageNumber
+                : this.currentPageNumber - 1;
+
+            this.transactions.splice(
+              this.numberOfItemsPerPage * (pageNumber - 1),
+              numerOfItemsToDelete,
+              ...transactions
+            );
+          }
+        },
+        (error) => {
+          const errorMessage =
+            error.status === 404
+              ? 'Invalid block number'
+              : error.error.FailureReason ||
+                `Failed to retrieve the transactions for address ${this.currentAddress} in block ${this.currentBlockNumber}`;
+          this.toastNotificationService.toast(
+            errorMessage,
+            Constants.toastNotificationTimeout
+          );
+        }
+      );
+  }
+
   pageChanged(pageNumber) {
-    if (this.currentAddress) this.searchByAddress(pageNumber);
-    else if (this.currentBlockNumber) this.searchByBlockNumber(pageNumber);
+    if (!!this.currentBlockNumber && !!this.currentAddress)
+      this.searchTransactionsByBlockNumberAndAddress(pageNumber);
+    else if (!!this.currentBlockNumber)
+      this.searchTransactionsByBlockNumber(pageNumber);
   }
 }

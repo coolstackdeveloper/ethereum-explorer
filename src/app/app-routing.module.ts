@@ -19,7 +19,7 @@ const routes: Routes = [
     component: TransactionsComponent,
   },
   {
-    path: 'addresses/:address/transactions',
+    path: 'transactions/:blockNumber/:address',
     component: TransactionsComponent,
   },
   {

@@ -14,23 +14,22 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Enter Block number/Address here"
-        #blockNumberOrAddress
+        placeholder="Enter Block number here"
+        #blockNumber
+      />
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Address here"
+        #address
       />
       <div class="input-group-append">
         <button
           class="btn btn-outline-secondary"
           type="button"
-          (click)="searchByBlockNumber(blockNumberOrAddress)"
+          (click)="searchTransactions(blockNumber, address)"
         >
-          Search by Block number
-        </button>
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          (click)="searchByAddress(blockNumberOrAddress)"
-        >
-          Search by Address
+          Search
         </button>
       </div>
     </div>

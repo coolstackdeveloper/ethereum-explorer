@@ -10,15 +10,15 @@ import { environment } from '../../environments/environment';
 export class EthereumApiService {
   constructor(private http: HttpClient) {}
 
-  searchByAddress(address, pageNumber) {
+  getTransactionCountByBlockNumber(blockNumber) {
     return this.http
-      .get<TransactionDto[]>(
-        `${environment.apiUrl}/addresses/${address}/transactions?pageNumber=${pageNumber}`
+      .get<Number>(
+        `${environment.apiUrl}/blocks/${blockNumber}/transactionCount`
       )
       .pipe(shareReplay());
   }
 
-  searchByBlockNumber(blockNumber, pageNumber) {
+  searchTransactionsByBlockNumber(blockNumber, pageNumber) {
     return this.http
       .get<TransactionDto[]>(
         `${environment.apiUrl}/blocks/${blockNumber}/transactions?pageNumber=${pageNumber}`
@@ -26,10 +26,10 @@ export class EthereumApiService {
       .pipe(shareReplay());
   }
 
-  getTransactionCountByBlockNumber(blockNumber) {
+  searchTransactionsByBlockNumberAndAddress(blockNumber, address, pageNumber) {
     return this.http
-      .get<Number>(
-        `${environment.apiUrl}/blocks/${blockNumber}/transactionCount`
+      .get<TransactionDto[]>(
+        `${environment.apiUrl}/transactions?blockNumber=${blockNumber}&address=${address}&pageNumber=${pageNumber}`
       )
       .pipe(shareReplay());
   }

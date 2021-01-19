@@ -41,8 +41,9 @@ export class HttpRequestInterceptorMock implements HttpInterceptor {
       return throwError({ message: 'Failed' });
     } else if (
       request.url &&
-      request.url.indexOf(`${environment.apiUrl}/addresses/6789/transactions`) >
-        -1
+      request.url.indexOf(
+        `${environment.apiUrl}/transactions?blockNumber=1234&address=0xabcd`
+      ) > -1
     ) {
       return of(new HttpResponse({ status: 200, body: [mockTransaction] }));
     }
