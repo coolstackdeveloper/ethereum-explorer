@@ -30,9 +30,6 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Usage
 
-The following screen shows the dashboard.
-![Explorer in action](screenshots/dashboard.png)
-
 The following screen shows the transactions for a given block number.
 
 ![Explorer in action](screenshots/transactions.png)
