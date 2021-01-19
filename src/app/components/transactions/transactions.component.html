@@ -1,11 +1,5 @@
 <div class="transactions">
-  <div
-    class="alert alert-info"
-    *ngIf="transactionsCount > 0 && transactions.length > 0"
-  >
-    A total of {{ transactionsCount }} transactions found
-  </div>
-  <div class="transactions__pagination">
+  <div class="transactions__pagination mt-2">
     <pagination-controls
       autoHide="true"
       *ngIf="transactions.length > 0"
