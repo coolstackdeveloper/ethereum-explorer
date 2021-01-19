@@ -32,7 +32,7 @@ describe('EthereumApiService', () => {
 
   it('should return block info for valid block number', (done: any) => {
     service
-      .searchTransactionsByBlockNumber(1234, 1)
+      .searchTransactions(1234, null, 1)
       .subscribe((transactions: TransactionDto[]) => {
         expect(transactions.length).toBe(1);
         expect(transactions[0].blockHash).toBe(mockTransaction.blockHash);
@@ -47,7 +47,7 @@ describe('EthereumApiService', () => {
   });
 
   it('should return error for invalid block number', (done: any) => {
-    service.searchTransactionsByBlockNumber(4567, 1).subscribe(
+    service.searchTransactions(5678, null, 1).subscribe(
       (_) => {},
       (error) => {
         expect(error.message).toBe('Failed');
@@ -58,7 +58,7 @@ describe('EthereumApiService', () => {
 
   it('should return block info for valid block number and address', (done: any) => {
     service
-      .searchTransactionsByBlockNumberAndAddress(6789, '0xabcd', 1)
+      .searchTransactions(1234, '5678', 1)
       .subscribe((transactions: TransactionDto[]) => {
         expect(transactions.length).toBe(1);
         expect(transactions[0].blockHash).toBe(mockTransaction.blockHash);

@@ -16,7 +16,7 @@ export class TransactionsComponent implements OnInit {
   currentAddress: string;
   numberOfItemsPerPage: number = 0;
   currentPageNumber: number = 1;
-  totalTransactionCount: number = 0;
+  transactionsCount: number = 0;
   transactions: TransactionDto[] = [];
   pagesVisited: number[] = [];
 
@@ -43,14 +43,15 @@ export class TransactionsComponent implements OnInit {
     );
 
     this.ethereumApiService
-      .getTransactionCountByBlockNumber(this.currentBlockNumber)
+      .getTransactionsCount(this.currentBlockNumber)
       .pipe(
         tap((transactionCount: number) => {
-          this.totalTransactionCount = transactionCount;
+          this.transactionsCount = transactionCount;
         }),
         switchMap((_) =>
-          this.ethereumApiService.searchTransactionsByBlockNumber(
+          this.ethereumApiService.searchTransactions(
             this.currentBlockNumber,
+            null,
             pageNumber
           )
         )
@@ -63,7 +64,7 @@ export class TransactionsComponent implements OnInit {
 
           if (this.transactions.length === 0) {
             this.numberOfItemsPerPage = transactions.length;
-            this.transactions = Array(this.totalTransactionCount).fill({});
+            this.transactions = Array(this.transactionsCount).fill({});
           }
 
           // Only fill required paged slot
@@ -95,7 +96,7 @@ export class TransactionsComponent implements OnInit {
     );
 
     this.ethereumApiService
-      .searchTransactionsByBlockNumberAndAddress(
+      .searchTransactions(
         this.currentBlockNumber,
         this.currentAddress,
         pageNumber

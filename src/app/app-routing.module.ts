@@ -15,10 +15,6 @@ const routes: Routes = [
     component: DashboardComponent,
   },
   {
-    path: 'blocks/:blockNumber/transactions',
-    component: TransactionsComponent,
-  },
-  {
     path: 'transactions/:blockNumber/:address',
     component: TransactionsComponent,
   },

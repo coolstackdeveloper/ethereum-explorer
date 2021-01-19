@@ -31,18 +31,20 @@ export class HttpRequestInterceptorMock implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     if (
       request.url &&
-      request.url.indexOf(`${environment.apiUrl}/blocks/1234/transactions`) > -1
+      request.url.indexOf(`${environment.apiUrl}/transactions?blockNumber=1234&address=`) > -1
     ) {
       return of(new HttpResponse({ status: 200, body: [mockTransaction] }));
     } else if (
       request.url &&
-      request.url.indexOf(`${environment.apiUrl}/blocks/4567/transactions`) > -1
+      request.url.indexOf(
+        `${environment.apiUrl}/transactions?blockNumber=5678&address=`
+      ) > -1
     ) {
       return throwError({ message: 'Failed' });
     } else if (
       request.url &&
       request.url.indexOf(
-        `${environment.apiUrl}/transactions?blockNumber=1234&address=0xabcd`
+        `${environment.apiUrl}/transactions?blockNumber=1234&address=5678`
       ) > -1
     ) {
       return of(new HttpResponse({ status: 200, body: [mockTransaction] }));

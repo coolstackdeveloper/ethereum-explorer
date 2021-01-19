@@ -1,9 +1,9 @@
 <div class="transactions">
   <div
     class="alert alert-info"
-    *ngIf="totalTransactionCount > 0 && transactions.length > 0"
+    *ngIf="transactionsCount > 0 && transactions.length > 0"
   >
-    A total of {{ totalTransactionCount }} transactions found
+    A total of {{ transactionsCount }} transactions found
   </div>
   <div class="transactions__pagination">
     <pagination-controls
