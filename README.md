@@ -1,10 +1,6 @@
-[![Build Status](https://travis-ci.com/stackpond/ethereum-explorer.svg?token=ZiEpqMrtCtoYozqmY1kh&branch=main)](https://travis-ci.com/stackpond/ethereum-explorer)
-
 # Ethereum Explorer
 
 The application allows users to search an Ethereum block for all the transactions associated with a block or an address within a block and return the results of the transaction.
-
-Try out the app deployed in Heroku at https://stackpond-ethereum-explorer.herokuapp.com/
 
 ## Development
 
@@ -36,10 +32,10 @@ The following screen shows the transactions for a given block number.
 
 ## Important notes
 
-For local testing of the app, run the local version of API (refer Ethereum API at https://github.com/stackpond/ethereum-api for setup details).
+For local testing of the app, run the local version of API (refer Ethereum API at https://github.com/coolstackdeveloper/ethereum-api for setup details).
 
 The transaction results are paged for better user experience.
 
-The app uses back end api (refer my another project Ethereum API at https://github.com/stackpond/ethereum-api which in turn uses Infura API (refer https://infura.io/docs/ethereum)
+The app uses back end api (refer my another project Ethereum API at https://github.com/coolstackdeveloper/ethereum-api which in turn uses Infura API (refer https://infura.io/docs/ethereum)
 
 Infura API has rate limit imposed (refer https://infura.io/pricing) which may also slow down the processing.
